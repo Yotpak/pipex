@@ -1,18 +1,27 @@
-NAME = pipex
-CC = gcc
-CFLAGS = -Werror -Wextra -Wall
-RM = rm -rf
-SRCS = pipex.c\
-		pipex_utils.c\
+PROG	= pipex
+SRCS 	= pipex.c pipex_utils.c ft_child_parent.c ft_execute.c ft_error.c
+OBJS 	= ${SRCS:.c=.o}
+CC 		= gcc
+CFLAGS = -Wall -Wextra -Werror -g
 
-$(NAME) : $(SRCS)
-	$(CC) $(CFLAGS) $(SRCS) -o $(NAME)
+.c.o:		%.o : %.c
+					@gcc ${CFLAGS} -c $< -o $(<:.c=.o)
+
+all: 		${PROG}
+
+${PROG}:	${OBJS}
+					@$(CC) ${OBJS} -o ${PROG}
+
+clean:
+					@rm -f ${OBJS}
+
+fclean: 	clean
+					@rm -f $(NAME)
+					@rm -f ${PROG}
+
+re:			fclean all
+
+re_bonus:	fclean bonus
 
 
-all : $(NAME)
-
-fclean : clean
-		$(RM) $(NAME)
-		make clean -C
-
-re : fclean all
+.PHONY: all clean fclean re re_bonus bonus party
