@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbalci <tbalci@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/17 03:47:31 by tbalci            #+#    #+#             */
+/*   Updated: 2023/09/17 17:06:30 by tbalci           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex.h"
 
 void	*ft_error(char *errmsg)
@@ -13,23 +25,42 @@ void	*ft_error(char *errmsg)
 	return (0);
 }
 
-char	**ft_getpath(char *av, char **env)
+
+char	*ft_getcmdpath(char *cmd, char **env)//execve'nin 2. parametresini vericek
 {
-	int	i;
-	int	j;
+	int		i;
+	char	**all_path;
+	char	*control;
+	char	*cmd_path;
+
 
 	i = 0;
-	j = 0;
-	while (env[i])
+	while (ft_strnstr(env[i], "PATH=", 5) == 0)
+		i++;
+	all_path = ft_split(env[i] + 5, ':');
+	i = 0;
+	while (all_path[i])
 	{
-		if (env[i] == 'PATH=')
-		{
-			while (env[i][j] != '=')
-				j++;
-			return ()
-		}
+		control = ft_strjoin(all_path[i], "/");
+		cmd_path = ft_strjoin(control, cmd);
+		//leak kontrol
+		if (access(cmd_path, F_OK) == 0)
+			return(cmd_path);
 		i++;
 	}
+	i = -1;
+	while (all_path[++i])
+		free(all_path[i]);
+	free(all_path);
+	return (0);
 }
 
-char	**ft_getpath()
+void	ft_execute(char *av, char **env)
+{
+	char	**cmd;
+	char	*cmd_path;
+
+	cmd = ft_split(av, ' '); // ("ls" "-l" "NULL")
+	cmd_path = ft_getcmdpath(cmd[0], env); // /usr/bin/ls lazim.
+	execve(cmd_path, cmd, env);
+}

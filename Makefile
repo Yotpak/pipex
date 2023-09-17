@@ -1,27 +1,26 @@
-PROG	= pipex
-SRCS 	= pipex.c pipex_utils.c ft_child_parent.c ft_execute.c ft_error.c
-OBJS 	= ${SRCS:.c=.o}
-CC 		= gcc
-CFLAGS = -Wall -Wextra -Werror -g
+NAME = pipex
+CC = gcc
+CFLAGS = -Wall -Wextra 
+SRCS = pipex.c pipex_utils.c
+OBJS = $(SRCS:.c=.o)
 
-.c.o:		%.o : %.c
-					@gcc ${CFLAGS} -c $< -o $(<:.c=.o)
+all: $(NAME)
 
-all: 		${PROG}
+$(NAME): $(OBJS)
+	make -C libft
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) libft/libft.a
 
-${PROG}:	${OBJS}
-					@$(CC) ${OBJS} -o ${PROG}
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-					@rm -f ${OBJS}
+	make -C libft clean
+	rm -f $(OBJS)
 
-fclean: 	clean
-					@rm -f $(NAME)
-					@rm -f ${PROG}
+fclean: clean
+	make -C libft fclean
+	rm -f $(NAME)
 
-re:			fclean all
+re: fclean all
 
-re_bonus:	fclean bonus
-
-
-.PHONY: all clean fclean re re_bonus bonus party
+.PHONY: all clean fclean re
