@@ -6,7 +6,7 @@
 /*   By: tbalci <tbalci@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 03:47:31 by tbalci            #+#    #+#             */
-/*   Updated: 2023/09/17 17:06:30 by tbalci           ###   ########.fr       */
+/*   Updated: 2023/09/18 03:40:50 by tbalci           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,12 @@ void	*ft_error(char *errmsg)
 	return (0);
 }
 
-
 char	*ft_getcmdpath(char *cmd, char **env)//execve'nin 2. parametresini vericek
 {
 	int		i;
 	char	**all_path;
 	char	*control;
 	char	*cmd_path;
-
 
 	i = 0;
 	while (ft_strnstr(env[i], "PATH=", 5) == 0)
@@ -45,7 +43,7 @@ char	*ft_getcmdpath(char *cmd, char **env)//execve'nin 2. parametresini vericek
 		cmd_path = ft_strjoin(control, cmd);
 		//leak kontrol
 		if (access(cmd_path, F_OK) == 0)
-			return(cmd_path);
+			return (cmd_path);
 		i++;
 	}
 	i = -1;
@@ -60,7 +58,7 @@ void	ft_execute(char *av, char **env)
 	char	**cmd;
 	char	*cmd_path;
 
-	cmd = ft_split(av, ' '); // ("ls" "-l" "NULL")
-	cmd_path = ft_getcmdpath(cmd[0], env); // /usr/bin/ls lazim.
+	cmd = ft_split(av, ' ');
+	cmd_path = ft_getcmdpath(cmd[0], env);
 	execve(cmd_path, cmd, env);
 }

@@ -6,14 +6,13 @@
 /*   By: tbalci <tbalci@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 03:47:27 by tbalci            #+#    #+#             */
-/*   Updated: 2023/09/17 18:27:26 by tbalci           ###   ########.fr       */
+/*   Updated: 2023/09/18 03:41:38 by tbalci           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "pipex.h"
 
-void	ft_child1(int *fd, char **av, char **env) //(fd, av[2], env);
+void	ft_child1(int *fd, char **av, char **env)
 {
 	int	file1;
 
@@ -35,28 +34,29 @@ void	ft_child2(int *fd, char **av, char **env)
 	ft_execute(av[3], env);
 }
 
-
-int main(int ac, char *av[], char **env)
+int	main(int ac, char *av[], char **env)
 {
-	if (ac != 5)//leak kontrol yap.
-		ft_error("arguments error");
-	int		fd[2];
-	int		pid;
-	pipe(fd);
-	pid = fork();
-	if (pid == 0)//pid kontrol yap.
-	{
-		ft_child1(fd, av, env);
-	}
-	pid = fork();
-	if (pid == 0)
-	{
-		ft_child2(fd, av, env);
-	}
-	close(fd[0]);
-	close(fd[1]);
-	wait(NULL);
-	wait(NULL);
+	int	fd[2];
+	int	pid;
 
-	
+	pipe(fd);
+	if (ac == 5)
+	{
+		pid = fork();
+		if (pid == 0)
+		{
+			ft_child1(fd, av, env);
+		}
+		pid = fork();
+		if (pid == 0)
+		{
+			ft_child2(fd, av, env);
+		}
+		close(fd[0]);
+		close(fd[1]);
+		wait(NULL);
+		wait(NULL);
+	}
+	else
+		ft_error("arguments error");
 }
