@@ -6,20 +6,17 @@ OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	make -C libft
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) libft/libft.a
-
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+$(NAME): $(SRCS)
+	@make -C libft
+	@$(CC) $(CFLAGS) $(SRCS) -o $(NAME) libft/libft.a
 
 clean:
-	make -C libft clean
-	rm -f $(OBJS)
+	@make -C libft clean
+	@rm -f $(OBJS)
 
 fclean: clean
-	make -C libft fclean
-	rm -f $(NAME)
+	@make -C libft fclean
+	@rm -f $(NAME)
 
 re: fclean all
 

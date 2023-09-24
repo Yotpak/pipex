@@ -6,7 +6,7 @@
 /*   By: tbalci <tbalci@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 03:47:31 by tbalci            #+#    #+#             */
-/*   Updated: 2023/09/21 19:28:54 by tbalci           ###   ########.fr       */
+/*   Updated: 2023/09/24 13:32:02 by tbalci           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	*ft_error(char *errmsg)
 	exit (0);
 }
 
-char	*ft_getcmdpath(char *cmd, char **env)//execve'nin 2. parametresini vericek
+char	*ft_getcmdpath(char *cmd, char **env)
 {
 	int		i;
 	char	**all_path;
