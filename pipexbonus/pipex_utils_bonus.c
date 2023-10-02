@@ -6,7 +6,7 @@
 /*   By: tbalci <tbalci@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 13:43:26 by tbalci            #+#    #+#             */
-/*   Updated: 2023/09/24 15:04:10 by tbalci           ###   ########.fr       */
+/*   Updated: 2023/09/25 20:47:33 by tbalci           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	*ft_error(char *errmsg)
 		write(1, &errmsg[i], 1);
 		i++;
 	}
-	exit (0);
+	exit (127);
 }
 
 char	*ft_getcmdpath(char *cmd, char **env)
